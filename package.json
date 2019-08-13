@@ -10,9 +10,9 @@
     "dev": "export NODE_ENV=development; nodemon --exec ts-node src/api/index.ts --watch src",
     "test": "./node_modules/jest/bin/jest.js --watch",
     "coverage": "jest --coverage",
-    "db:rollback": "tsc && npx sequelize-cli db:migrate:undo:all --options-path ./.sequelizerc-dist",
-    "db:migrate": "tsc && npx sequelize-cli db:migrate --options-path ./.sequelizerc-dist",
-    "db:seed": "tsc && npx sequelize-cli db:seed:all --options-path ./.sequelizerc-dist",
+    "db:rollback": "npm run build && npx sequelize-cli db:migrate:undo:all --options-path ./.sequelizerc-dist",
+    "db:migrate": "npm run build && npx sequelize-cli db:migrate --options-path ./.sequelizerc-dist",
+    "db:seed": "npm run build && npx sequelize-cli db:seed:all --options-path ./.sequelizerc-dist",
     "db:reset": "npm run db:rollback && npm run db:migrate && npm run db:seed"
   },
   "devDependencies": {
@@ -26,6 +26,7 @@
     "jest": "^24.8.0",
     "nodemon": "^1.19.1",
     "rimraf": "^2.6.3",
+    "socket.io-client": "^2.2.0",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.3"
@@ -36,6 +37,7 @@
     "@types/express-jwt": "^0.0.42",
     "@types/jsonwebtoken": "^8.3.3",
     "@types/lodash": "^4.14.136",
+    "@types/socket.io": "^2.1.2",
     "@types/validator": "^10.11.2",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
@@ -45,6 +47,7 @@
     "mongoose": "^5.6.9",
     "pg": "^7.12.1",
     "sequelize": "^5.13.1",
+    "socket.io": "^2.2.0",
     "typegoose": "^5.9.0",
     "uuid": "^3.3.2",
     "winston": "^3.2.1",
