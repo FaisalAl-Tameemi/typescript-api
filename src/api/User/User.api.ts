@@ -5,6 +5,8 @@ import { sign } from 'jsonwebtoken'
 import ResponseUtil from '../../util/response.util'
 import config from '../../config'
 import { User } from '../../db'
+import { User as UserModel } from '../../db/models/User/User.model'
+import { userEmitter, userEventTypes } from './User.api.events'
 
 const router = Router()
 
@@ -47,6 +49,8 @@ router.post('/login',  async (req: Request, res: Response) => {
                 throw new Error('Password is invalid')
             }
 
+            userEmitter.emit('message', foundUser.id, userEventTypes.LOGIN)
+
             return foundUser
         })
         .then((foundUser) => ({
@@ -56,6 +60,13 @@ router.post('/login',  async (req: Request, res: Response) => {
         }))
         .then(ResponseUtil.handleResponse(res))
         .catch(ResponseUtil.handleError(res))
+})
+
+/**
+ * User model hooks
+ */
+User.afterCreate('emitEventAfterCreate', (doc: UserModel, options: any) => {
+    userEmitter.emit('message', doc.id, userEventTypes.CREATE)
 })
 
 export default router

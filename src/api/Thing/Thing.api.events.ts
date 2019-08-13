@@ -20,7 +20,7 @@ export const thingEmitter = new EventEmitter() as TypedEventEmitter<ThingEvent>
  * Example usage which listens to events
  */
 thingEmitter.on('message', (thingId: string, ownerId: string, action: thingEventTypes) => {
-    logger.info('@newThingEvent', {
+    logger.info('@thingEvents', {
         action: thingEventTypes[action],
         documentId: thingId,
         ownerId: ownerId,
