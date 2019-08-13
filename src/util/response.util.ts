@@ -1,10 +1,7 @@
 import { Response } from 'express'
 
 import logger from './log.util'
-
-export interface IHigherOrderFunc {
-    (data: object): any;
-}
+import IHigherOrderFunc from 'typings/IHigherOrderFunction'
 
 /**
  * A set of higher order methods that can be used as a catch all at the end of a promise
