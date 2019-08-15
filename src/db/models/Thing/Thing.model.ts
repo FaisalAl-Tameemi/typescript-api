@@ -1,4 +1,4 @@
-import { Model, DataTypes, BuildOptions } from 'sequelize'
+import { Model, DataTypes } from 'sequelize'
 
 export enum thingTypeEnums {
     GENERAL = 'general',
@@ -10,21 +10,19 @@ export class Thing extends Model {
     public id?: string;
     public title!: string;
     public kind!: thingTypeEnums;
+    public ownerId!: string;
 
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 
-
-    static associate(db: any): void {
+    public static associate(db: any): void {
         Thing.belongsTo(db.User, {
             as: 'owner',
             foreignKey: 'ownerId',
         })
     }
 
-    static initScopes(db: any): void {
-
-    }
+    public static initScopes(db: any): void {}
 }
 
 export const initModel = (sequelize: any): void => {
@@ -39,7 +37,7 @@ export const initModel = (sequelize: any): void => {
             allowNull: false,
         },
         kind: {
-            type: new DataTypes.STRING(),
+            type: new DataTypes.STRING(36),
             allowNull: false,
         },
         createdAt: {
@@ -49,7 +47,7 @@ export const initModel = (sequelize: any): void => {
         updatedAt: {
             allowNull: false,
             type: DataTypes.DATE
-        }
+        },
     }, {
         underscored: false,
         tableName: 'things',

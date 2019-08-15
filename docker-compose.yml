@@ -29,3 +29,20 @@ services:
       - 5432:5432
     volumes:
       - ./resources/postgres:/var/lib/postgresql/data
+
+  api:
+    image: node:12
+    command: yarn dev
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+    ports:
+      - 3000:3000
+    working_dir: /usr/app
+    volumes:
+      - ./:/usr/app/
+      - /usr/app/resources
+

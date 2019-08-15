@@ -1,6 +1,7 @@
 import * as EventEmitter from 'events'
 import TypedEventEmitter from 'typings/ITypedEventEmitter'
 
+import { Thing } from '../../db'
 import logger from '../../util/log.util'
 
 export enum thingEventTypes {
