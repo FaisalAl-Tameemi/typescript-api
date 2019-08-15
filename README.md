@@ -4,6 +4,9 @@ A JSON API built with Typescript using ExpressJS, Sequelize, Postgres and Socket
 
 #### TODO
 
-- [ ] Add multiple sockets files with integrate with the event emitter for each service
-- [ ] Add unit tests
+- [x] Add support for sockets via Socket.IO
+- [x] Add support for internal events via EventEmitter
+- [x] Add tests using Jest
+- [ ] Enable *unit* testing with Sequelize
+    - Note: This task is more involved than it sounds
 - [ ] Expand integration tests using PostmanBDD + Newman CLI
