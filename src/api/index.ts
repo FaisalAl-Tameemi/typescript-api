@@ -17,6 +17,9 @@ app.set('PORT', config.PORT)
 // middleware
 app.use(bodyParser.json())
 
+// health check route
+app.get('/', (req: express.Request, res: express.Response) => res.json({ ok: 1 }))
+
 // routers
 app.use('/things', ThingRouter)
 app.use('/users', UserRouter)

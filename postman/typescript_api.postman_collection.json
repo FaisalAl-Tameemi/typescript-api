@@ -1,50 +1,38 @@
 {
 	"info": {
-		"_postman_id": "39c1e72b-7c49-4827-b82c-32d466a77040",
+		"_postman_id": "d732a66b-572b-4e60-b9cb-93f07462deac",
 		"name": "TS API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Login",
+			"name": "Health Check",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "8f190f98-0b81-48de-a12f-8c24d79e6b3e",
+						"id": "3567bbe0-bbec-4a57-badc-cb17a3b24a12",
 						"exec": [
-							"var jsonData = pm.response.json().data;",
+							"pm.test(\"response is ok\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
 							"",
-							"pm.environment.set(\"TOKEN\", jsonData.token);"
+							"pm.test(\"response must be valid and have JSON response payload\", () => {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.json;",
+							"});"
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"email\": \"{{EMAIL}}\",\n\t\"password\": \"something\"\n}"
-				},
+				"method": "GET",
+				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/users/login",
-					"protocol": "http",
+					"raw": "{{API_BASE_URL}}",
 					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"users",
-						"login"
+						"{{API_BASE_URL}}"
 					]
 				}
 			},
@@ -58,10 +46,32 @@
 					"script": {
 						"id": "8f190f98-0b81-48de-a12f-8c24d79e6b3e",
 						"exec": [
-							"var jsonData = pm.response.json().data;",
+							"pm.test(\"response is ok\", () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
 							"",
-							"pm.environment.set(\"TOKEN\", jsonData.token);",
-							"pm.environment.set(\"EMAIL\", jsonData.email);"
+							"pm.test(\"response must be valid and have JSON response payload\", () => {",
+							"     pm.response.to.be.ok",
+							"     pm.response.to.be.json",
+							"})",
+							"",
+							"pm.test('response contains a token for the new user', () => {",
+							"  let jsonData = pm.response.json()",
+							"  pm.expect(jsonData).to.have.property('data')",
+							"  pm.expect(jsonData.data).to.have.property('token')",
+							"})",
+							"",
+							"// attempt parsing the response body",
+							"try {",
+							"    const jsonData = pm.response.json().data",
+							"    ",
+							"    pm.environment.set(\"TOKEN\", jsonData.token)",
+							"    pm.environment.set(\"EMAIL\", jsonData.email)",
+							"} catch (err) {",
+							"    // these logs are viewable from Postman Console",
+							"    console.error(err)",
+							"    throw err",
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -82,12 +92,10 @@
 					"raw": "{\n\t\"name\": \"test\",\n\t\"email\": \"test+{{$guid}}@test.com\",\n\t\"password\": \"something\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:3000/users/register",
-					"protocol": "http",
+					"raw": "{{API_BASE_URL}}/users/register",
 					"host": [
-						"localhost"
+						"{{API_BASE_URL}}"
 					],
-					"port": "3000",
 					"path": [
 						"users",
 						"register"
@@ -97,17 +105,120 @@
 			"response": []
 		},
 		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8f190f98-0b81-48de-a12f-8c24d79e6b3e",
+						"exec": [
+							"pm.test(\"response is ok\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"response must be valid and have JSON response payload\", () => {",
+							"     pm.response.to.be.ok",
+							"     pm.response.to.be.json",
+							"})",
+							"",
+							"pm.test('response contains a token for the new user', () => {",
+							"  let jsonData = pm.response.json()",
+							"  pm.expect(jsonData).to.have.property('data')",
+							"  pm.expect(jsonData.data).to.have.property('token')",
+							"})",
+							"",
+							"// attempt parsing the response body",
+							"try {",
+							"    const jsonData = pm.response.json().data",
+							"    pm.environment.set(\"TOKEN\", jsonData.token)",
+							"} catch (err) {",
+							"    // these logs are viewable from Postman Console",
+							"    console.error(err)",
+							"    throw err",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"{{EMAIL}}\",\n\t\"password\": \"something\"\n}"
+				},
+				"url": {
+					"raw": "{{API_BASE_URL}}/users/login",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "All Things",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "34161df2-fdc1-4336-babf-0132677178b2",
+						"exec": [
+							"pm.test(\"response is ok\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"response must be valid and have JSON response payload\", () => {",
+							"     pm.response.to.be.ok",
+							"     pm.response.to.be.json",
+							"})",
+							"",
+							"pm.test('response follows the expected schema', () => {",
+							"  const jsonData = pm.response.json()",
+							"  const expectedSchema = {",
+							"      \"type\": \"object\",",
+							"      \"properties\": {",
+							"          \"data\": {",
+							"              \"type\": \"array\",",
+							"              \"items\": {",
+							"                  \"type\": \"object\",",
+							"                  \"properties\": {",
+							"                      \"id\": \"string\",",
+							"                      \"title\": \"string\",",
+							"                      \"kind\": \"string\",",
+							"                  }",
+							"              }",
+							"          }",
+							"      }",
+							"  }",
+							"  ",
+							"  tv4.validate(jsonData, expectedSchema)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/things",
-					"protocol": "http",
+					"raw": "{{API_BASE_URL}}/things",
 					"host": [
-						"localhost"
+						"{{API_BASE_URL}}"
 					],
-					"port": "3000",
 					"path": [
 						"things"
 					]
@@ -117,6 +228,45 @@
 		},
 		{
 			"name": "New Thing",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e2ee34a7-ac99-44fc-9c76-ca36112cb1d2",
+						"exec": [
+							"pm.test(\"response is ok\", () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"response must be valid and have JSON response payload\", () => {",
+							"     pm.response.to.be.json",
+							"})",
+							"",
+							"pm.test('response follows the expected schema', () => {",
+							"  const jsonData = pm.response.json()",
+							"  const expectedSchema = {",
+							"      \"type\": \"object\",",
+							"      \"properties\": {",
+							"          \"data\": {",
+							"              \"type\": \"object\",",
+							"              \"properties\": {",
+							"                  \"id\": \"string\",",
+							"                  \"title\": \"string\",",
+							"                  \"kind\": \"string\",",
+							"                  \"createdAt\": \"string\",",
+							"                  \"updatedAt\": \"string\",",
+							"              }",
+							"          }",
+							"      }",
+							"  }",
+							"  ",
+							"  tv4.validate(jsonData, expectedSchema)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -142,12 +292,10 @@
 					"raw": "{\n\t\"title\": \"another test\",\n\t\"kind\": \"general\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:3000/things",
-					"protocol": "http",
+					"raw": "{{API_BASE_URL}}/things",
 					"host": [
-						"localhost"
+						"{{API_BASE_URL}}"
 					],
-					"port": "3000",
 					"path": [
 						"things"
 					]
