@@ -3,6 +3,13 @@
 A JSON API built with Typescript using ExpressJS, Sequelize, Postgres and Socket.IO
 
 
+#### Requirements
+
+* NodeJS (>= 12)
+* Postgres (>= 9)
+* Postman (_optional_)
+* Docker Compose (_optional_)
+
 #### Getting Started
 
 This project can either be run directly on host machine (requires Node + Postgres) or can also be run via Docker Compose, 
