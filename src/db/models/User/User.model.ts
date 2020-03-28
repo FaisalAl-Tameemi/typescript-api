@@ -1,6 +1,11 @@
 import * as bcrypt from 'bcrypt'
 import { Model, DataTypes, BuildOptions } from 'sequelize'
 
+export enum userRoleTypes {
+    MEMBER = 'member',
+    ADMIN = 'admin'
+}
+
 export class User extends Model {
     public id?: string;
     public name!: string;
