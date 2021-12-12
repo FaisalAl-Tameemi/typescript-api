@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import * as expressJWT from 'express-jwt';
 import * as jwt from 'jsonwebtoken';
 import * as boom from 'boom';
 
@@ -14,24 +13,6 @@ import {
   decodeJwtToken,
   TokenTypes
 } from '../util/token/token.util';
-
-const authMiddleware = expressJWT({
-  secret: config.JWT_SECRET,
-  credentialsRequired: true,
-  // A method to extract the token from the request object
-  getToken: function fromHeaderOrQuerystring(req: Request): string | null {
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.split(' ')[0] === 'Bearer'
-    ) {
-      return req.headers.authorization.split(' ')[1];
-    } else if (req.query && req.query.token) {
-      return req.query.token;
-    }
-
-    return null;
-  }
-});
 
 export const requiredAuthWithRole = (roles: userRoleTypes[]) => {
   return (req: Request, res: Response, next: Function): void => {
@@ -62,7 +43,7 @@ export const requireAuth = async (
   ) {
     token = req.headers.authorization.split(' ')[1];
   } else if (req.query && req.query.token) {
-    token = req.query.token;
+    token = req.query.token as string;
   } else {
     return ResponseUtil.handleError(res, 401)(userErr);
   }
@@ -103,7 +84,7 @@ export const requireAuthRefresh = async (
   ) {
     token = req.headers.authorization.split(' ')[1];
   } else if (req.query && req.query.token) {
-    token = req.query.token;
+    token = req.query.token as string;
   } else {
     return ResponseUtil.handleError(res, 401)(userErr);
   }
@@ -129,5 +110,3 @@ export const requireAuthRefresh = async (
     return ResponseUtil.handleError(res, 401)(userErr);
   }
 };
-
-export default authMiddleware;

@@ -1,7 +1,6 @@
 import {default as express, Router} from 'express'
-import authMiddleware from '../../middleware/auth.middleware'
+import { requireAuth } from '../../middleware/auth.middleware'
 import { Thing, User } from '../../db'
-import { thingEmitter, thingEventTypes } from './Thing.api.events'
 
 const router = Router()
 
@@ -19,7 +18,7 @@ router.get('/',  async (req: express.Request, res: express.Response) => {
     }))
 })
 
-router.post('/', authMiddleware, async (req: express.Request, res: express.Response) => {
+router.post('/', requireAuth, async (req: express.Request, res: express.Response) => {
     try {
         const user: AuthedUser = req['user']
 
@@ -27,8 +26,6 @@ router.post('/', authMiddleware, async (req: express.Request, res: express.Respo
             ...req.body,
             ownerId: user.id,
         })
-
-        thingEmitter.emit('message', newThing.id, user.id, thingEventTypes.CREATE)
 
         return res.status(201).json(newThing)
     }

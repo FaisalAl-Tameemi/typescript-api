@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { UnauthorizedError } from 'express-jwt'
 
 import logger from '../util/log.util'
 

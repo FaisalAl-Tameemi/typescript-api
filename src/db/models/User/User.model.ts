@@ -11,6 +11,7 @@ export class User extends Model {
     public name!: string;
     public email!: string;
     public password?: string;
+    public role!: string;
 
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -82,6 +83,10 @@ export const initModel = (sequelize: any): void => {
         password: {
             type: DataTypes.STRING,
             allowNull: false,
+        },
+        role: {
+            type: DataTypes.STRING,
+            allowNull: true,
         },
         createdAt: {
             allowNull: false,

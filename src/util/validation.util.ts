@@ -45,7 +45,7 @@ export const validateRequest = (
 ) => {
   return (req: Request, res: Response, next: Function) => {
     schema
-      .validate(req[requestPart])
+      .validateAsync(req[requestPart])
       .then(() => next())
       .catch(err => next(parseJoiError(err)))
   }

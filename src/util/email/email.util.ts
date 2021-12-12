@@ -59,8 +59,8 @@ export interface IEmailRequestPayload {
 
 export const sendEmail = async (payload: IEmailRequestPayload) => {
   // validate the email request schema
-  return Joi
-    .validate(payload, emailPayloadSchema)
+  return emailPayloadSchema
+    .validateAsync(payload)
     .then(async (validatedPayload) => {
       const templatePath = path.resolve(
         __dirname,
